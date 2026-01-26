@@ -75,7 +75,7 @@
 • Bible study starts from <strong>Romans chapter 1</strong> and continues to <strong>Romans chapter 16</strong>, then repeats the cycle
 </p>
 
-<section id="romans3-kh" style="
+<section id="romans3-read" style="
   max-width:950px;
   margin:50px auto;
   padding:30px;
@@ -85,39 +85,91 @@
   box-shadow:0 10px 25px rgba(0,0,0,0.08);
 ">
 
-  <h2 style="text-align:center;color:#6a1b9a;margin-bottom:10px;">
-    📖 រ៉ូម ជំពូក ៣
+  <h2 style="text-align:center;color:#6a1b9a;">
+    📖 រ៉ូម ជំពូក ៣ (Romans Chapter 3)
   </h2>
   <p style="text-align:center;color:#777;margin-bottom:25px;">
-    ព្រះគម្ពីរភាសាខ្មែរ (Cambodian Bible)
+    Khmer & English Bible Reading
   </p>
 
-  <iframe
-    src="https://www.bible.com/km/bible/196/ROM.3.KHCB"
-    width="100%"
-    height="600"
-    style="border:1px solid #ddd;border-radius:8px;"
-    loading="lazy"
-    title="Romans Chapter 3 - Khmer Bible">
-  </iframe>
+  <!-- Highlight Verses -->
+  <div style="
+    background:#f3e8fd;
+    padding:15px 20px;
+    border-radius:8px;
+    margin-bottom:25px;
+  ">
+    <strong>ខណ្ឌសំខាន់ៗ:</strong>
+    <ul>
+      <li>រ៉ូម 3:10 – គ្មាននរណាម្នាក់សុចរិតទេ</li>
+      <li>រ៉ូម 3:23 – មនុស្សគ្រប់គ្នាបានប្រព្រឹត្តបាប</li>
+      <li>រ៉ូម 3:24 – សុចរិតដោយព្រះគុណតាមព្រះយេស៊ូវ</li>
+    </ul>
+  </div>
 
-  <div style="text-align:center;margin-top:20px;">
-    <a href="https://www.bible.com/km/bible/196/ROM.3.KHCB"
-       target="_blank"
-       style="
-         display:inline-block;
-         padding:12px 26px;
-         background:#6a1b9a;
-         color:#fff;
-         text-decoration:none;
-         border-radius:25px;
-         font-size:16px;
-       ">
-      📖 អានពេញទំព័រ (Khmer)
-    </a>
+  <!-- Toggle Buttons -->
+  <div style="text-align:center;margin-bottom:20px;">
+    <button onclick="showLang('kh')" style="
+      padding:10px 22px;
+      border-radius:20px;
+      border:none;
+      background:#6a1b9a;
+      color:#fff;
+      font-size:15px;
+      cursor:pointer;
+      margin-right:10px;
+    ">ភាសាខ្មែរ</button>
+
+    <button onclick="showLang('en')" style="
+      padding:10px 22px;
+      border-radius:20px;
+      border:1px solid #6a1b9a;
+      background:#f3e8fd;
+      color:#6a1b9a;
+      font-size:15px;
+      cursor:pointer;
+    ">English (KJV)</button>
+  </div>
+
+  <!-- Khmer Bible -->
+  <div id="kh-bible" style="display:block;">
+    <iframe
+      src="https://www.bible.com/km/bible/196/ROM.3.KHCB"
+      width="100%"
+      height="600"
+      style="border:1px solid #ddd;border-radius:8px;"
+      loading="lazy"
+      title="Romans 3 Khmer Bible">
+    </iframe>
+  </div>
+
+  <!-- English Bible -->
+  <div id="en-bible" style="display:none;">
+    <iframe
+      src="https://www.biblegateway.com/passage/?search=Romans+3&version=KJV"
+      width="100%"
+      height="600"
+      style="border:1px solid #ddd;border-radius:8px;"
+      loading="lazy"
+      title="Romans 3 English Bible">
+    </iframe>
   </div>
 
 </section>
+
+<script>
+  function showLang(lang) {
+    document.getElementById("kh-bible").style.display = "none";
+    document.getElementById("en-bible").style.display = "none";
+
+    if (lang === "kh") {
+      document.getElementById("kh-bible").style.display = "block";
+    } else {
+      document.getElementById("en-bible").style.display = "block";
+    }
+  }
+</script>
+
 
 
 <section style="
