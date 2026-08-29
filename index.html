@@ -68,15 +68,23 @@
 </head>
 <body>
 
+   <!-- LOGIN / SIGN UP SCREEN -->
     <div id="login-screen" class="modal-overlay">
         <div class="modal-box">
-            <h2>Cashier Login</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">Sign in to access the POS system.</p>
+            <h2 id="auth-title">Cashier Login</h2>
+            <p id="auth-subtitle" style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">Sign in to access the POS system.</p>
+            
             <input type="email" id="email" placeholder="Email Address">
-            <input type="password" id="password" placeholder="Password">
-            <button class="btn btn-primary" onclick="handleLogin()">Log In</button>
-            <p id="login-error" style="color: var(--danger); font-size: 14px; margin-top: 10px; display: none;"></p>
-        </div>
+            <input type="password" id="password" placeholder="Password (min 6 characters)">
+            
+            <button id="auth-btn" class="btn btn-primary" onclick="handleAuth()">Log In</button>
+            
+            <button id="toggle-auth-btn" style="background: none; border: none; color: var(--primary); cursor: pointer; width: 100%; margin-top: 15px; font-size: 14px;" onclick="toggleAuthMode()">
+                Need an account? Sign Up
+            </button>
+            
+            <p id="login-error" style="color: var(--danger); font-size: 14px; margin-top: 15px; display: none; text-align: center;"></p>
+       
     </div>
 
     <div class="app-container">
@@ -134,22 +142,63 @@
         let currentOrder = [];
         const taxRate = 0.08;
 
-        // --- Authentication ---
-        async function handleLogin() {
+       // --- Authentication ---
+        let isLoginMode = true;
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-title').innerText = isLoginMode ? 'Cashier Login' : 'Register Cashier';
+            document.getElementById('auth-subtitle').innerText = isLoginMode ? 'Sign in to access the POS system.' : 'Create a new cashier account.';
+            document.getElementById('auth-btn').innerText = isLoginMode ? 'Log In' : 'Sign Up';
+            document.getElementById('toggle-auth-btn').innerText = isLoginMode ? 'Need an account? Sign Up' : 'Already have an account? Log In';
+            document.getElementById('login-error').style.display = 'none'; // clear errors on toggle
+        }
+
+        async function handleAuth() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('login-error');
             
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            
-            if (error) {
-                errorMsg.innerText = error.message;
+            // Basic validation
+            if (!email || password.length < 6) {
+                errorMsg.innerText = "Please enter a valid email and a password of at least 6 characters.";
                 errorMsg.style.display = 'block';
-            } else {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('barcode-input').focus();
-                loadMenu(); // Load menu only after auth
+                return;
             }
+
+            // Disable button while processing
+            document.getElementById('auth-btn').innerText = "Processing...";
+            
+            if (isLoginMode) {
+                // LOG IN
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                
+                if (error) {
+                    errorMsg.innerText = error.message;
+                    errorMsg.style.display = 'block';
+                    document.getElementById('auth-btn').innerText = "Log In";
+                } else {
+                    loginSuccess();
+                }
+            } else {
+                // SIGN UP
+                const { data, error } = await supabase.auth.signUp({ email, password });
+                
+                if (error) {
+                    errorMsg.innerText = error.message;
+                    errorMsg.style.display = 'block';
+                    document.getElementById('auth-btn').innerText = "Sign Up";
+                } else {
+                    alert("Account created successfully! You are now logged in.");
+                    loginSuccess();
+                }
+            }
+        }
+
+        function loginSuccess() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('barcode-input').focus();
+            loadMenu(); // Load menu from database only after authentication
         }
 
         // --- App Logic ---
